@@ -56,11 +56,12 @@ exports.addUrlToList = function(requestedUrl){
 };
 
 exports.isURLArchived = function(){
-
+  console.log("hello");
 };
 
-exports.downloadUrls = function(){
-
+exports.downloadUrls = function(requestedUrl){
+  var requestedUrlContent;
+  fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, "door");
 };
 
 

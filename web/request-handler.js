@@ -42,5 +42,5 @@ exports.handleRequest = function (request, response) {
   //   response.writehead(statusCode, headers);
   //   response.end(archive.paths.list);
 };
-console.log(archive.isUrlInList("www.espn.com"));
+archive.downloadUrls("www.rei.com");
 // exports.handleRequest();
