@@ -1,3 +1,6 @@
+// The second will read the list of URLs from that file and fetch the pages specified by those URLs from the internet, saving each web page into a file on your computer.
+// Configure this second app to run on a schedule using cron.
+
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
@@ -26,9 +29,22 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(){
+  var list = fs.readFile(exports.paths.list, string, function(err, data){
+    if (err) throw err;
+    console.log(data);
+  });
+  //make it loopable
+  return list;
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(requestedUrl){
+  var list = exports.readListOfUrls();
+  for (var i = 0; i < list.length; i++){
+    if(list[i] === requestedUrl){
+      return true;
+    }
+  }
+  return false;
 };
 
 exports.addUrlToList = function(){
