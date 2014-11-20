@@ -37,8 +37,7 @@ exports.readListOfUrls = function(){
 exports.isUrlInList = function(requestedUrl){
   console.log("1");
   var list = exports.readListOfUrls();
-  console.log(list);
-  var urlList = list.split(",");
+  var urlList = list.split("\n");
   console.log(urlList);
   for (var i = 0; i < urlList.length; i++){
     if(urlList[i] === requestedUrl){
@@ -46,13 +45,14 @@ exports.isUrlInList = function(requestedUrl){
     }
   }
   return false;
-  // exports.addUrlToList(urlList);
-  // exports.downloadUrls()
 };
 
-exports.addUrlToList = function(list, url){
-  return list.push(url);
-
+exports.addUrlToList = function(requestedUrl){
+  var list = exports.readListOfUrls();
+  console.log(list);
+  var newList = list.concat("\n" + requestedUrl);
+  console.log(newList);
+  fs.writeFile(exports.paths.list, newList);
 };
 
 exports.isURLArchived = function(){
