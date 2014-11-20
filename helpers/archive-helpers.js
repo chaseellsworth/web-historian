@@ -4,6 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var htmlfetcher = require('../workers/htmlfetcher.js')
 
 
 /*
@@ -60,8 +61,10 @@ exports.isURLArchived = function(){
 };
 
 exports.downloadUrls = function(requestedUrl){
-  var requestedUrlContent;
-  fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, "door");
+  fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, "");
+  var path = exports.paths.archivedSites + "/" + requestedUrl;
+  // console.log(path);
+  htmlfetcher.fetchUrl(requestedUrl, path);
 };
 
 
