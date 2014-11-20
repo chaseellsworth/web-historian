@@ -21,6 +21,10 @@ exports.handleRequest = function (request, response) {
     response.end();
   }else if(request.method  === 'GET'){
     response.writehead(statusCode, headers);
+    if(archive.readUrlList(archive.isUrlInList) === false){
+      // add it to the list
+      // download it
+    };
     // serveAssest(response, url path HTML, function(){} );
     // serveAssest(response, url path CSS, function(){} );
     // serveAssest(response, url path JS, function(){} );

@@ -28,30 +28,50 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
-  var list = fs.readFile(exports.paths.list, string, function(err, data){
-    if (err) throw err;
-    console.log(data);
+exports.readListOfUrls = function(callback){
+  fs.readFile(exports.paths.list, string, function(err, data){
+    if (err){
+      throw err;
+    } else {
+      callback(data);
+    }
   });
-  //make it loopable
-  return list;
 };
 
-exports.isUrlInList = function(requestedUrl){
-  var list = exports.readListOfUrls();
-  for (var i = 0; i < list.length; i++){
-    if(list[i] === requestedUrl){
+exports.isUrlInList = function(requstedUrl, data){
+  var urlList = data.split(",");
+  for (var i = 0; i < urlList.length; i++){
+    if(urlList[i] === requestedUrl){
       return true;
     }
   }
   return false;
+  // exports.addUrlToList(urlList);
+  // exports.downloadUrls()
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(list, url){
+  return list.push(url);
+
 };
 
 exports.isURLArchived = function(){
+
 };
 
 exports.downloadUrls = function(){
+
 };
+
+
+////IN CASE WE GET CONFUSED ABOUT CALLBACKS
+// exports.readListOfUrls = function(func){
+//   var list = fs.readFile(exports.paths.list, string, function(err, data){
+//     if (err){
+//       throw err;
+//     } else {
+//       console.log(data);}
+//     };
+//   );
+//   return list
+// };
