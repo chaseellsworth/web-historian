@@ -67,6 +67,11 @@ exports.downloadUrls = function(requestedUrl){
   htmlfetcher.fetchUrl(requestedUrl, path);
 };
 
+exports.pathOfStoredUrl = function (requestedUrl){
+  return exports.paths.archivedSites + "/" + requestedUrl;
+}
+
+
 
 ////IN CASE WE GET CONFUSED ABOUT CALLBACKS
 // exports.readListOfUrls = function(func){
