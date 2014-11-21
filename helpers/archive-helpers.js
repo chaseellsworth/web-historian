@@ -4,6 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('request');
 var htmlfetcher = require('../workers/htmlfetcher.js')
 
 
@@ -46,27 +47,33 @@ exports.isUrlInList = function(requestedUrl){
   return false;
 };
 
-exports.addUrlToList = function(requestedUrl){
-  var list = exports.readListOfUrls();
-  var newList = list.concat("\n" + requestedUrl);
-  fs.writeFile(exports.paths.list, newList);
+exports.addUrlToList = function(url, callback){
+  fs.appendFile(exports.path.list, url+'\n', function(err, file){
+    callback();
+  });
+  // var list = exports.readListOfUrls();
+  // var newList = list.concat("\n" + requestedUrl);
+  // fs.writeFile(exports.paths.list, newList);
 };
 
-exports.isURLArchived = function(){
-  console.log("hello");
+exports.isURLArchived = function(url, callback){
+  var sitePath = path.join(exports.path.archivedSites, url);
+
+  fs.exists(sitePath, function(exists){
+    callback(exists);
+  });
 };
 
-exports.downloadUrls = function(requestedUrl){
+exports.downloadUrls = function(requestedUrl, callback){
   fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, ""); //creates an empty file with the name of the requested url
   var path = exports.paths.archivedSites + "/" + requestedUrl; //creates a path to the empty file
   htmlfetcher.fetchUrl(requestedUrl, path); //grabs html data from the website and puts it on the file
+  callback();
 };
 
-exports.pathOfStoredUrl = function (requestedUrl){
-  return exports.paths.archivedSites + "/" + requestedUrl;
-}
-
-
+// exports.pathOfStoredUrl = function (requestedUrl){
+//   return exports.paths.archivedSites + "/" + requestedUrl;
+// }
 
 ////IN CASE WE GET CONFUSED ABOUT CALLBACKS
 // exports.readListOfUrls = function(func){

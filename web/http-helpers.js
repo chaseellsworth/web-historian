@@ -5,6 +5,7 @@
 var path = require('path');
 var fs = require('fs');
 var archive = require('../helpers/archive-helpers');
+var Q = require('q');
 
 exports.headers = headers = {
   "access-control-allow-origin": "*",
@@ -46,7 +47,7 @@ exports.sendRedirect = function(response, location, status){
   status = status || 302;
   response.writeHead(status, {Location: location});
   response.end();
-}
+};
 
 exports.serveAssets = function(response, asset, callback) {
   var encoding = {encoding: "utf8"};
@@ -56,15 +57,14 @@ exports.serveAssets = function(response, asset, callback) {
         if(err){
           callback ? callback() : exports.send404(response);
         }else{
-          exports.sendResponse(response, "" + data);
+          exports.sendResponse(response, data);
         }
       });
     }else{
-      exports.sendResponse(response, "" + data);
+      exports.sendResponse(response, data);
     }
   });
-
-}
+};
 
 
 
