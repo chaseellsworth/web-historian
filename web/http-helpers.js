@@ -5,8 +5,6 @@
 var path = require('path');
 var fs = require('fs');
 var archive = require('../helpers/archive-helpers');
-var statusCode = 200;
-
 
 exports.headers = headers = {
   "access-control-allow-origin": "*",
@@ -16,17 +14,65 @@ exports.headers = headers = {
   'Content-Type': "text/html"
 };
 
-exports.serveAssets = function(response, asset, statusCode, callback, type) {
-
-  var headers =  export.headers;
-  header["Content-Type"] = type || "text/html";
-  response.writehead(statusCode, headers);
-  response.end(data);
-
+exports.sendResponse = function(response, obj, status){
+  status = status || 200;
+  response.writeHead(status, headers);
+  response.end(obj);
 };
 
-exports.sendResponse = function(response, data, statusCode, type){
+exports.collectData = function(request, callback){
+  var data = "";
+  request.on("data", function(chunk){
+    data += chunk;
+
+  });
+  request.on("end", function(){
+    callback(data);
+  })
+};
+
+exports.send404 = function(response){
+  exports.sendResponse(response, "404 page not found", 404);
+};
+
+exports.sendRedirect = function(response, location, status){
+  status = status || 302;
+  response.writeHead(status, {Location: location});
+  response.end();
 }
+
+exports.serveAssets = function(response, asset, callback) {
+
+  var encoding = {encoding: "utf8"};
+
+  fs.readFile(archive.paths.siteAssets + asset, encoding, function(err, data){
+    if(err){
+      fs.readFile(archive.paths.archiveSites + asset, encoding, function(err, data){
+        if(err){
+          callback ? callback() : exports.send404(response);
+        }else{
+          exports.sendResponse(response, data);
+        }
+      });
+    }else{
+      exports.sendResponse(response, data);
+    }
+  });
+
+}
+
+
+
+
+//   var headers =  export.headers;
+//   header["Content-Type"] = type || "text/html";
+//   response.writehead(statusCode, headers);
+//   response.end(data);
+
+// };
+
+// exports.sendResponse = function(response, data, statusCode, type){
+// }
 
 // As you progress, keep thinking about what helper functions you can put here!
 // Write some code here that helps serve up your static files!

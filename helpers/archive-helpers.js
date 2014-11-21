@@ -36,10 +36,10 @@ exports.readListOfUrls = function(){
 
 
 exports.isUrlInList = function(requestedUrl){
-  console.log("1");
+  // console.log("1");
   var list = exports.readListOfUrls();
   var urlList = list.split("\n");
-  console.log(urlList);
+  // console.log(urlList);
   for (var i = 0; i < urlList.length; i++){
     if(urlList[i] === requestedUrl){
       return true;
@@ -50,9 +50,9 @@ exports.isUrlInList = function(requestedUrl){
 
 exports.addUrlToList = function(requestedUrl){
   var list = exports.readListOfUrls();
-  console.log(list);
+  //console.log(list);
   var newList = list.concat("\n" + requestedUrl);
-  console.log(newList);
+  //console.log(newList);
   fs.writeFile(exports.paths.list, newList);
 };
 
@@ -61,10 +61,10 @@ exports.isURLArchived = function(){
 };
 
 exports.downloadUrls = function(requestedUrl){
-  fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, "");
-  var path = exports.paths.archivedSites + "/" + requestedUrl;
+  fs.writeFile(exports.paths.archivedSites + "/" + requestedUrl, ""); //creates an empty file with the name of the requested url
+  var path = exports.paths.archivedSites + "/" + requestedUrl; //creates a path to the empty file
   // console.log(path);
-  htmlfetcher.fetchUrl(requestedUrl, path);
+  htmlfetcher.fetchUrl(requestedUrl, path); //grabs html data from the website and puts it on the file
 };
 
 exports.pathOfStoredUrl = function (requestedUrl){
