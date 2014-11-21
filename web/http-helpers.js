@@ -22,11 +22,18 @@ exports.sendResponse = function(response, obj, status){
 
 exports.collectData = function(request, callback){
   var data = "";
+  console.log("collectData");
+  console.log(data);
   request.on("data", function(chunk){
+    console.log("collectData");
+    console.log(chunk);
     data += chunk;
-
+    console.log("collectData");
+    console.log(data);
   });
   request.on("end", function(){
+    console.log("collectData");
+    console.log(data);
     callback(data);
   })
 };
@@ -42,20 +49,18 @@ exports.sendRedirect = function(response, location, status){
 }
 
 exports.serveAssets = function(response, asset, callback) {
-
   var encoding = {encoding: "utf8"};
-
   fs.readFile(archive.paths.siteAssets + asset, encoding, function(err, data){
     if(err){
       fs.readFile(archive.paths.archiveSites + asset, encoding, function(err, data){
         if(err){
           callback ? callback() : exports.send404(response);
         }else{
-          exports.sendResponse(response, data);
+          exports.sendResponse(response, "" + data);
         }
       });
     }else{
-      exports.sendResponse(response, data);
+      exports.sendResponse(response, "" + data);
     }
   });
 
